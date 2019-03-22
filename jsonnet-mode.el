@@ -176,12 +176,13 @@ START is the position of |||.  PREFIX is the (whitespace) preceding |||."
 
 (defun jsonnet--find-current-block-comment ()
   "Return the position of the comment start if inside a block comment. Otherwise, return nil."
-  (let* ((previous-comment-start (save-excursion (re-search-backward "\\/\\*" nil t)))
-         (previous-comment-end (save-excursion (re-search-backward "\\*\\/" nil t)))
-         (is-in-block-comment (and (integerp previous-comment-start)
-                                   (or (not (integerp previous-comment-end))
-                                       (> previous-comment-start previous-comment-end)))))
-    (when is-in-block-comment previous-comment-start)))
+  (let* ((ppss (syntax-ppss))
+         (in-comment (nth 4 ppss))
+         (comment-style (nth 7 ppss))
+         (start (nth 8 ppss))
+         (start (nth 8 ppss)))
+    (when (and in-comment (eq comment-style 1))
+      start)))
 
 (defun jsonnet--find-current-multiline-string ()
   "Return the position of the beginning of the current multiline string.
