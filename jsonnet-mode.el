@@ -179,7 +179,6 @@ START is the position of |||.  PREFIX is the (whitespace) preceding |||."
   (let* ((ppss (syntax-ppss))
          (in-comment (nth 4 ppss))
          (comment-style (nth 7 ppss))
-         (start (nth 8 ppss))
          (start (nth 8 ppss)))
     (when (and in-comment (eq comment-style 1))
       start)))
